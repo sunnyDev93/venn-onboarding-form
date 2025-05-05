@@ -8,6 +8,9 @@ import { InputField } from "../InputField";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormTitle } from "../FormTitle";
+import { FormContainer } from "../FormContainer";
+import { FormErrorMessage } from "../FormErrorMessage";
+import { Button } from "../Button";
 
 export const OnboardingForm = () => {
   const methods = useForm<OnboardingFormData>({
@@ -80,19 +83,12 @@ export const OnboardingForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="max-w-xl mx-auto mt-10 p-8 border border-gray-200 shadow-lg rounded-lg bg-white space-y-6"
-      >
-        <FormTitle step={{ current: 1, total: 5 }} subtitle="Enter your personal and business information">
+      <FormContainer onSubmit={handleSubmit(onSubmit)}>
+        <FormTitle step={{ current: 1, total: 3 }} subtitle="Enter your personal and business information">
           Onboarding Form
         </FormTitle>
 
-        {formError && (
-          <div className="text-red-600 bg-red-50 border border-red-300 p-3 rounded">
-            {formError}
-          </div>
-        )}
+        <FormErrorMessage message={formError} />
 
         <InputField name="firstName" label="First Name" />
         <InputField name="lastName" label="Last Name" />
@@ -116,14 +112,15 @@ export const OnboardingForm = () => {
           }}
         />
 
-        <button
+        <Button
           type="submit"
-          disabled={!isValid || !isCorpValid || submitting || hasSubmitError}
-          className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          loading={submitting}
+          disabled={!isValid || !isCorpValid || hasSubmitError}
+          fullWidth
         >
-          {submitting ? "Submitting..." : "Submit"}
-        </button>
-      </form>
+          Submit
+        </Button>
+      </FormContainer>
     </FormProvider>
   );
 };
