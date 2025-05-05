@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { validateCorporationNumber } from "../services/api";
 
 export const useValidateCorporationNumber = () => {
   const [isValid, setIsValid] = useState<boolean | null>(null);
@@ -7,19 +7,10 @@ export const useValidateCorporationNumber = () => {
 
   const validate = async (number: string) => {
     setLoading(true);
-    try {
-      const response = await axios.get(
-        `https://fe-hometask-api.qa.vault.tryvault.com/corporation-number/${number}`
-      );
-      setIsValid(response.data.valid);
-      return response.data.valid;
-    } catch (e) {
-      setIsValid(false);
-      console.error("Error validating corporation number:", e);
-      return false;
-    } finally {
-      setLoading(false);
-    }
+    const result = await validateCorporationNumber(number);
+    setIsValid(result.valid);
+    setLoading(false);
+    return result.valid;
   };
 
   return { validate, isValid, loading };
