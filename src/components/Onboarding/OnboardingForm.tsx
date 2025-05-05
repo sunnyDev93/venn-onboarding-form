@@ -7,6 +7,7 @@ import { submitProfileDetails } from "../../services/api";
 import { InputField } from "../InputField";
 import { useState } from "react";
 import axios from "axios";
+import { FormTitle } from "../FormTitle";
 
 export const OnboardingForm = () => {
   const methods = useForm<OnboardingFormData>({
@@ -57,7 +58,7 @@ export const OnboardingForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto mt-10 p-8 border border-gray-200 shadow-lg rounded-lg bg-white space-y-6"
       >
-        <h2 className="text-2xl font-bold text-gray-800 text-center">Onboarding Form</h2>
+        <FormTitle>Onboarding Form</FormTitle>
 
         {formError && (
           <div className="text-red-600 bg-red-50 border border-red-300 p-3 rounded">
