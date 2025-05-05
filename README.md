@@ -58,9 +58,9 @@ src/
 │   ├── FormTitle.tsx
 │   ├── InputField.tsx
 │   ├── FormContainer.tsx
+│   ├── FormFieldWrapper.tsx
 │   ├── FormErrorMessage.tsx
-│   └── ui/
-│       └── Button.tsx
+│   └── Button.tsx
 │
 ├── hooks/               # Custom hooks
 │   └── useValidateCorporationNumber.ts
