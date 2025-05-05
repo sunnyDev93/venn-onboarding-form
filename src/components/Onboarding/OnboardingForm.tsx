@@ -58,7 +58,9 @@ export const OnboardingForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto mt-10 p-8 border border-gray-200 shadow-lg rounded-lg bg-white space-y-6"
       >
-        <FormTitle>Onboarding Form</FormTitle>
+        <FormTitle step={{ current: 1, total: 5 }} subtitle="Enter your personal and business information">
+          Onboarding Form
+        </FormTitle>
 
         {formError && (
           <div className="text-red-600 bg-red-50 border border-red-300 p-3 rounded">
