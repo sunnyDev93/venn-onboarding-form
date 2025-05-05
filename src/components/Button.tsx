@@ -31,6 +31,7 @@ export const Button = ({
     <button
       type={type}
       disabled={disabled || loading}
+      role="button"
       className={clsx(baseStyle, variants[variant], width, "disabled:cursor-not-allowed", className)}
       {...props}
     >
