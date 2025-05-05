@@ -12,6 +12,7 @@ export const OnboardingForm = () => {
       handleSubmit,
       formState: { errors },
       setError,
+      clearErrors,
       trigger,
     } = useForm<OnboardingFormData>({
       resolver: yupResolver(onboardingSchema),
@@ -94,6 +95,8 @@ export const OnboardingForm = () => {
                   type: "manual",
                   message: "Invalid corporation number",
                 });
+              } else {
+                clearErrors("corporationNumber");
               }
             }}
             className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
