@@ -17,17 +17,20 @@ export const InputField = ({ name, label, type = "text", placeholder, onBlur }: 
   } = useFormContext();
 
   const error = errors[name]?.message as string | undefined;
+  const inputId = `input-${name}`;
 
   return (
-    <FormFieldWrapper label={label} error={error}>
+    <FormFieldWrapper label={label} htmlFor={inputId} error={error}>
       <input
+        id={inputId}
         {...register(name)}
+        name={name}
+        type={type}
+        placeholder={placeholder}
         onBlur={async () => {
           await trigger(name);
           onBlur?.();
         }}
-        type={type}
-        placeholder={placeholder}
         className="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </FormFieldWrapper>
