@@ -5,6 +5,7 @@ import type { OnboardingFormData } from "../../types/form";
 import { useValidateCorporationNumber } from "../../hooks/useValidateCorporationNumber";
 import { submitProfileDetails } from "../../services/api";
 import { InputField } from "../InputField";
+import { useState } from "react";
 import axios from "axios";
 
 export const OnboardingForm = () => {
@@ -13,16 +14,16 @@ export const OnboardingForm = () => {
     mode: "onBlur",
   });
 
-  const {
-    handleSubmit,
-    setError,
-    clearErrors,
-  } = methods;
-
+  const { handleSubmit, setError, clearErrors, reset } = methods;
   const { validate } = useValidateCorporationNumber();
 
+  const [formError, setFormError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
   const onSubmit = async (data: OnboardingFormData) => {
+    setFormError(null);
     const isCorpValid = await validate(data.corporationNumber);
+
     if (!isCorpValid) {
       setError("corporationNumber", {
         type: "manual",
@@ -34,14 +35,19 @@ export const OnboardingForm = () => {
     }
 
     try {
+      setSubmitting(true);
       await submitProfileDetails(data);
       alert("Submitted successfully!");
+      reset();
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        console.error(err.response?.data?.message || "Submission failed");
+        const message = err.response?.data?.message || "Submission failed due to server error";
+        setFormError(message);
       } else {
-        console.error("An unexpected error occurred");
+        setFormError("An unexpected error occurred. Please try again.");
       }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -51,12 +57,17 @@ export const OnboardingForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto mt-10 p-8 border border-gray-200 shadow-lg rounded-lg bg-white space-y-6"
       >
-        <h2 className="text-2xl font-bold text-gray-800">Onboarding Form</h2>
+        <h2 className="text-2xl font-bold text-gray-800 text-center">Onboarding Form</h2>
+
+        {formError && (
+          <div className="text-red-600 bg-red-50 border border-red-300 p-3 rounded">
+            {formError}
+          </div>
+        )}
 
         <InputField name="firstName" label="First Name" />
         <InputField name="lastName" label="Last Name" />
         <InputField name="phone" label="Phone Number" placeholder="+11234567890" />
-
         <InputField
           name="corporationNumber"
           label="Corporation Number"
@@ -76,9 +87,10 @@ export const OnboardingForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
+          disabled={submitting}
+          className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Submit
+          {submitting ? "Submitting..." : "Submit"}
         </button>
       </form>
     </FormProvider>
