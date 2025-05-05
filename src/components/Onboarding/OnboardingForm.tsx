@@ -1,10 +1,10 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { onboardingSchema } from "../utils/validation";
-import type { OnboardingFormData } from "../types/form";
-import { useValidateCorporationNumber } from "../hooks/useValidateCorporationNumber";
-import { submitProfileDetails } from "../services/api";
-import { InputField } from "./InputField";
+import { onboardingSchema } from "../../utils/validation";
+import type { OnboardingFormData } from "../../types/form";
+import { useValidateCorporationNumber } from "../../hooks/useValidateCorporationNumber";
+import { submitProfileDetails } from "../../services/api";
+import { InputField } from "../InputField";
 import axios from "axios";
 
 export const OnboardingForm = () => {
